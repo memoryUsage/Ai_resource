@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html data-page-node-id="6kAWg0A9mh1uPI62yDwCU2" lang="zh-CN">
+<head data-page-node-id="6FyLhlkgnGizG5Srxv5fIe">
+<script data-page-node-id="JEatahaycXH78agSTN3f1L" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="nnf0tJEuT1QEZqUQaNEpk9" charset="UTF-8">
+<meta data-page-node-id="yeFH7SKYL7lUNmUfkhsZyo" content="width=device-width, initial-scale=1.0" name="viewport">
+<title data-page-node-id="MmWwJk0yHCO8e5WMfEkbaf" data-pnid-children="7Tz4zR45ZXAdZZdrtROKkf">QA 工具选型指南 · 前端测试团队</title>
+<style data-page-node-id="jxj3L91kyB8UzPan2QgHJG" data-pnid-children="IaBWIOadWwr5V4B6wRqkr1">
+:root {
+  --ink: #2C2C2A;
+  --ink-2: #5F5E5A;
+  --ink-3: #888780;
+  --line: #E5E4DE;
+  --line-2: #D3D1C7;
+  --paper: #FFFFFF;
+  --page: #F7F7F4;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --teal: #0F6E56;
+  --teal-bg: #E1F5EE;
+  --amber: #854F0B;
+  --amber-bg: #FAEEDA;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.doc {
+  max-width: 1040px;
+  margin: 32px auto 64px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 48px 56px 56px;
+}
+header { border-bottom: 2px solid var(--ink); padding-bottom: 22px; margin-bottom: 34px; }
+.kicker { font-size: 12px; letter-spacing: .12em; color: var(--blue); font-weight: 600; text-transform: uppercase; margin: 0 0 8px; }
+h1 { font-size: 30px; line-height: 1.25; margin: 0 0 10px; letter-spacing: -.01em; }
+.sub { font-size: 15px; color: var(--ink-2); margin: 0; }
+.meta { font-size: 12px; color: var(--ink-3); margin-top: 14px; }
+h2 { font-size: 20px; margin: 44px 0 8px; padding-top: 6px; }
+h2 .num { color: var(--line-2); margin-right: 10px; font-variant-numeric: tabular-nums; }
+.lead { color: var(--ink-2); margin: 0 0 20px; }
+h3 { font-size: 15px; margin: 0 0 6px; }
+
+table { width: 100%; border-collapse: collapse; margin: 18px 0 8px; font-size: 13px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { background: var(--page); font-weight: 600; color: var(--ink); border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+tbody tr:hover { background: #FBFAF7; }
+td.tool { font-weight: 600; white-space: nowrap; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.p0 { background: var(--blue-bg); color: var(--blue); }
+.p1 { background: var(--teal-bg); color: var(--teal); }
+.p2 { background: var(--amber-bg); color: var(--amber); }
+.cost { white-space: nowrap; color: var(--ink-2); }
+
+.flow { background: var(--page); border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; margin: 20px 0 8px; }
+.flow svg { display: block; width: 100%; height: auto; }
+.note { font-size: 13px; color: var(--ink-2); border-left: 3px solid var(--blue); padding: 4px 0 4px 14px; margin: 18px 0; }
+
+.scene { border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin: 16px 0; }
+.scene-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.scene-head h3 { margin: 0; font-size: 16px; }
+.tag { font-size: 12px; color: var(--teal); background: var(--teal-bg); padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .cols { grid-template-columns: 1fr; } .doc { padding: 28px 20px; } }
+.box { background: var(--page); border-radius: 10px; padding: 12px 14px; }
+.box .lbl { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--ink-3); text-transform: uppercase; margin-bottom: 5px; }
+.box p { margin: 0; font-size: 13.5px; }
+.box.benefit { background: var(--teal-bg); }
+.box.benefit .lbl { color: var(--teal); }
+
+.roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
+@media (max-width: 860px) { .roadmap { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .roadmap { grid-template-columns: 1fr; } }
+.step { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.step .idx { font-size: 12px; color: var(--blue); font-weight: 700; }
+.step h3 { margin: 4px 0 8px; font-size: 14px; }
+.step p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+.step .goal { display: block; margin-top: 10px; font-size: 12px; color: var(--teal); font-weight: 600; }
+
+footer { margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+@media print {
+  body { background: #fff; font-size: 12px; }
+  .doc { margin: 0; border: 0; border-radius: 0; padding: 0; max-width: none; }
+  .scene, .step, .flow, tr { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  tbody tr:hover { background: transparent; }
+}
+</style>
+</head>
+<body data-page-node-id="j7MY0ZXwg6Jj8pDEYREV3H">
+<article data-page-node-id="Y93lA8JIFPWNz8Mf1BjoUY" class="doc">
+<header data-page-node-id="FEU7BuMwFupOSSdNcynso5">
+  <p data-page-node-id="eSsbO7Ob7eZvbQ9NTSMISw" class="kicker"><!--pnid:TVPLtpzPtTN7q49nqiZj5m-->Frontend QA · Tooling Guide</p>
+  <h1 data-page-node-id="mkoIpFgyyI2DO8IykbfwUQ"><!--pnid:QwrZ2fYlhZsexjCMDXMQNJ-->QA 工具选型指南</h1>
+  <p data-page-node-id="dV1Q5nYbHY2nMY4MP3UusX" class="sub"><!--pnid:lizhRmLJxBPr5zRPidicPs-->按场景对号入座：每个工具对应一个具体痛点，先想清楚「最怕线上出什么事」，再决定先引入哪一个。</p>
+  <p data-page-node-id="7kPekSLnQroQdziQXjwtRz" class="meta"><!--pnid:gy6tGVgYscSWDtSbz312xO-->适用对象：前端测试团队 / QA 工程师　·　版本：2026-11　·　用法：先看流程图定位场景，再查速查表与实例</p>
+</header>
+
+<h2 data-page-node-id="N18nkrSaX6GpNJHYP5RPJ4"><span data-page-node-id="5FtDXcfzPom1LNJHybkfoM" class="num"><!--pnid:nqreyz0B2hz2kp1IXyKsAL-->01</span><!--pnid:BpixNtqOGBIpSz5W8TKF9s-->工具选型决策流程</h2>
+<p data-page-node-id="fVr5G7r42jEpuJwn4cOOD5" class="lead"><!--pnid:Q3Aud0u02mtCqpdYDEUCjh-->从「这次要测什么」出发，六种常见场景分别走到对应的工具组合。蓝色为研发阶段工具，青色为发布与运行阶段工具。</p>
+<div data-page-node-id="GQGIa63xbG3KRrYKAkA3qs" class="flow">
+<svg data-page-node-id="y0JsvFYtVtzpofOlZEd5Az" aria-label="QA 工具选型决策流程图" role="img" viewBox="0 0 680 432">
+<title data-page-node-id="7A6dautoyDhCbhKXPXXlBj" data-pnid-children="DfBtcp9NvHOU2GWKnsda49">QA 工具选型决策流程图</title>
+<desc data-page-node-id="cd9Q7rqXGXKRNMYXYu2ITD"><!--pnid:ekKqQTeeuBXePdy14S6648-->从"这次要测什么"出发，按六种场景分别走到对应工具。</desc>
+<defs data-page-node-id="KRCt1O7N00n7HGZnCM3oPO">
+<marker data-page-node-id="3oYwA6fbtdbGyJvVHOWiVe" id="arrow" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+<path data-page-node-id="yXVDr6vQh4fcL9u6zAtCdP" d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+</marker>
+</defs>
+<rect data-page-node-id="MBqrhRhIKUYBRsuLsnTvjS" fill="#F1EFE8" height="44" rx="8" stroke="#5F5E5A" stroke-width="0.5" width="160" x="260" y="20"/>
+<text data-page-node-id="EKjkOH6yYxpe9z2SUNRRY5" dominant-baseline="central" fill="#444441" font-size="14" font-weight="600" text-anchor="middle" x="340" y="42"><!--pnid:BzvkLI6ILlKaPlqjWBTyZc-->这次要测什么？</text>
+<path data-page-node-id="rwexBZMDP7jRyeOcl05mFk" d="M340 64 V76 H100" fill="none" stroke="#185FA5" stroke-width="1.5"/>
+<path data-page-node-id="z2a2IxW9FlIG8cDl0WeO4Q" d="M100 76 V390" fill="none" stroke="#185FA5" stroke-width="1.5"/>
+<circle data-page-node-id="OzKOU0zqHY3V7iYZASEnJ7" cx="100" cy="110" fill="#185FA5" r="5"/>
+<rect data-page-node-id="YgwBpWkNVTEZlXS1PIZdkR" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="88"/>
+<text data-page-node-id="dKIUOfMMK6tdYFiinV9m7g" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="110"><!--pnid:8RgCxYj1xvFYxvX9OtgoYD-->改了小段逻辑或单个组件</text>
+<path data-page-node-id="v5jA1NTcDvc2l8GLQ4muan" d="M334 110 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="m8mn2a9rwSqJDiwYRTIxVa" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="88"/>
+<text data-page-node-id="sf8HBMmkdeAdfkO9cuIxZO" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="110"><!--pnid:x1PbU3VeDoJ9ZXUPdzxWM0-->Vitest + Testing Library</text>
+<circle data-page-node-id="ldgkK2eVaCTl9WpwPhUgcv" cx="100" cy="166" fill="#185FA5" r="5"/>
+<rect data-page-node-id="Tye0WpSJWDrbBbu6HqEbBN" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="144"/>
+<text data-page-node-id="V0BeggcgHqAkvodnbYVlBM" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="166"><!--pnid:k6lf3FdytAZxkhy83fS74i-->要验证登录、下单等完整流程</text>
+<path data-page-node-id="HvEz2sirwiiSa6IVs4TNYh" d="M334 166 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="g11fZgGcwmssatJOpGCUBR" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="144"/>
+<text data-page-node-id="j4ByidxbIpR9avCZZxi7sC" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="166"><!--pnid:LUUrdqOKxuTJb9cG3O7TLR-->Playwright / Cypress</text>
+<circle data-page-node-id="Ze3nw3NX76SQjScqMNE9D8" cx="100" cy="222" fill="#185FA5" r="5"/>
+<rect data-page-node-id="GTZVa3Q5zSyHHFIV0uwjSj" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="200"/>
+<text data-page-node-id="lrADeUAgbIZkCuQK5qmpzH" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="222"><!--pnid:V7arHMgtgC81GRbuzedY29-->后端没就绪，或怕接口字段变动</text>
+<path data-page-node-id="Is0YUqOL8mM1sUxQPKsQ6r" d="M334 222 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="njuWJgjXI3mOcl00qRzSal" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="200"/>
+<text data-page-node-id="Q34hvxwid6gAdaYyCOKbNn" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="222"><!--pnid:cmJsVkdlNqpmwBgeXPxmtd-->MSW + 契约测试</text>
+<circle data-page-node-id="cVs3ngMKzbn7QS3Vgn7g2Z" cx="100" cy="278" fill="#0F6E56" r="5"/>
+<rect data-page-node-id="fySht0z6kiujUIatPPX1H1" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="256"/>
+<text data-page-node-id="fzpvLgGTMKVLpUMf0Sh7bi" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="278"><!--pnid:l81jCBvPlZTduTDPLsvfZU-->改了样式、颜色、排版</text>
+<path data-page-node-id="o5JQ4Q0Z73tXlgOzmjNn7N" d="M334 278 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="MtT0WE8TFtyPXE8akN365g" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="256"/>
+<text data-page-node-id="FNKaqKoWpyavbVLlByh214" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="278"><!--pnid:y4jgDAF5ePIuJLzdBv800m-->Storybook + 截图比对</text>
+<circle data-page-node-id="RvGOAX2BqzI0DIY5Vgpvmb" cx="100" cy="334" fill="#0F6E56" r="5"/>
+<rect data-page-node-id="4dKOk362VDqIYDDWZbZzWs" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="312"/>
+<text data-page-node-id="JYTAImnZqpBxek84IxPePl" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="334"><!--pnid:bNrQ7VciT6WjsYeK7TJgwJ-->发版前做无障碍、性能、安全体检</text>
+<path data-page-node-id="njOEyEsP7UW4AP7MesSJw1" d="M334 334 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="GQphTVbXnpmiumPhkI7Yvq" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="312"/>
+<text data-page-node-id="zBXJfLPde9DRR0DNx1LuWs" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="334"><!--pnid:GVl9IVlFwysICqf9YZtIoO-->axe / Lighthouse / ZAP</text>
+<circle data-page-node-id="CKtaSWjaM1X0ZzpUNyFrd5" cx="100" cy="390" fill="#0F6E56" r="5"/>
+<rect data-page-node-id="ACUfdILJlzPdNi7KL635eK" fill="#E6F1FB" height="44" rx="8" stroke="#185FA5" stroke-width="0.5" width="210" x="120" y="368"/>
+<text data-page-node-id="hAnmhw9MZFAeXj7PlUxr7L" dominant-baseline="central" fill="#0C447C" font-size="13" text-anchor="middle" x="225" y="390"><!--pnid:y9gF93r7D6b5JqanZ94wmI-->上线后想盯真实用户报错</text>
+<path data-page-node-id="WUmKLCjW0wZ2YQFr9nId5w" d="M334 390 H364" fill="none" marker-end="url(#arrow)" stroke="#185FA5" stroke-width="1.5"/>
+<rect data-page-node-id="R6IieeYAR5zjbb5gnBKtC5" fill="#E1F5EE" height="44" rx="8" stroke="#0F6E56" stroke-width="0.5" width="270" x="370" y="368"/>
+<text data-page-node-id="QgefRX29ilB8QCOVbtgSQg" dominant-baseline="central" fill="#085041" font-size="13" text-anchor="middle" x="505" y="390"><!--pnid:QMY2EOajrw1ZYmtSvSC4Rn-->Sentry + 合成监控</text>
+</svg>
+</div>
+<p data-page-node-id="FT2X4q3IL14FZPtLc0xbOy" class="note"><!--pnid:eAqDDSUPi6L49oVptb1be0-->一条需求常同时命中多条分支（例如改结算页 = 完整流程 + 视觉 + 发版体检），按风险叠加即可，不必二选一。分支 1、2、5 建议默认常开，其余按项目痛点逐步加。</p>
+
+<h2 data-page-node-id="cyKEZKsIIqlF7HWbkWNbpC"><span data-page-node-id="75b3ubBbfSL2YJygfveEKR" class="num"><!--pnid:1WIrXPKbdBN7W8hBNLPmey-->02</span><!--pnid:AZsa5mXnvaKpVb475r1eEB-->工具速查表</h2>
+<table data-page-node-id="qJfKLd5zzvPH744z5SsJCw">
+<thead data-page-node-id="3oFNZmrwwkXa6OshEIEZv5">
+<tr data-page-node-id="ozd37Ow7dgoJmpJH91aVbk"><th data-page-node-id="XnHMZmtACkYkdvigH2yyQ1"><!--pnid:Mr1YBTANQ2ACogujsPe0Wa-->工具 / 类别</th><th data-page-node-id="v64DPs0jaS4F0mxcJOtzYW"><!--pnid:0IVmCDs3r2u5B6Y3QE3XVY-->主要用途</th><th data-page-node-id="jnupLlpcZAVsVYHpUXm2pw"><!--pnid:zzwBke853UVZFKDFCMRNJL-->解决的问题</th><th data-page-node-id="S890Y8WEqN3YUXokFi2V87"><!--pnid:1kiDbxSBFkAh8bflAlW1Pc-->典型使用方式</th><th data-page-node-id="VJ6HEoXHAGx63SRExjGDht"><!--pnid:THtM9NT6tnYzhCBwr6IaYn-->优先级</th><th data-page-node-id="ft4WaclT1xINeujNUrjPKv"><!--pnid:z1UhBZnsqqjdGnbYDwuxaI-->导入成本</th></tr>
+</thead>
+<tbody data-page-node-id="zhcfGhavB7mnCCFlYzlVKA">
+<tr data-page-node-id="RkBkLfA45pHSQ3ufYXO1Yr"><td data-page-node-id="rn3OMShzokM0pw8hAv8NuX" class="tool"><!--pnid:RQ8AtjO5VpactZi4ziwhs1-->Vitest + Testing Library<br data-page-node-id="9ZHvQ154iKKN0dceZlvi0s"><!--pnid:rraQAttYwmke8Khmp147KY-->单元 / 组件</td><td data-page-node-id="vzmy9SzYO8yWhUKgGDoxVM"><!--pnid:V1zWfpkjA3ZKFZKPJ5oG2y-->验证小段逻辑与单个组件</td><td data-page-node-id="dxg3x7sYGvCL3YaFOPl2td"><!--pnid:NAgSK9nnvzoIIrj5aYPDS1-->改一行代码就弄坏计算或按钮行为</td><td data-page-node-id="hzPCZnhqLwrUBPcFdNk2TU"><!--pnid:45zx6lz8fJcTpqx86dltTF-->每次保存自动跑，几秒出结果</td><td data-page-node-id="jMvsxH2bBr06qfeYjAnC49"><span data-page-node-id="xM4eqCnUkMNEn05SOwRIOC" class="pill p0"><!--pnid:RXs0Hapa4iJNNuUGUkdz4T-->P0 必备</span></td><td data-page-node-id="dEUi88RirXgYl7wUqSK4n4" class="cost"><!--pnid:UuN7pL7bjeyfoIMrT61nYU-->低 · 开源</td></tr>
+<tr data-page-node-id="gwNVj28GTOcuHX16LEkrBc"><td data-page-node-id="ROiMy2JThte5ojywFo1yg1" class="tool"><!--pnid:3JYVosgdGCFlYm3Dk1hM0o-->Playwright / Cypress<br data-page-node-id="nLyT3sUuYClCuUvwXfjuTc"><!--pnid:Ya3BBEr6akZul9U8gkZC1U-->端到端</td><td data-page-node-id="vfDOUE6KlZEeSCmIUJ1gxB"><!--pnid:ycOkcTnvcVrztqGJqozSFH-->模拟真人走完整个流程</td><td data-page-node-id="lRQtiyECnlXt5Irgtkin7Y"><!--pnid:MKPgayF1NQ3vqPrPLtX0tB-->登录、下单、保存等主流程失效</td><td data-page-node-id="ejV6w6RkGVNFoVqLYmpTm5"><!--pnid:D2mj3gjlI2fXTCGGOa3Ef3-->提交代码后自动跑关键路径</td><td data-page-node-id="mQOWyIuLlgn3OgMvSAU1sI"><span data-page-node-id="d5WiBvOoTvBzKtiItEL0FD" class="pill p0"><!--pnid:RAVsOMkQSS6pbN3UE0a6ZJ-->P0 必备</span></td><td data-page-node-id="K8jTttj8Xusa2odUlQZT2t" class="cost"><!--pnid:NclpMsqQWibdQhfq5KihaU-->低～中 · 云版付费</td></tr>
+<tr data-page-node-id="Czpn2zuynFOx1HOTLSTYIy"><td data-page-node-id="7leTxZ1psxZmj9hfpyUOJ3" class="tool"><!--pnid:KzotQCwXV2IfUHpQEdArXV-->MSW + 契约测试<br data-page-node-id="C8AUB4IfCldDN9NyBSJwLy"><!--pnid:JWt3aPB3lIzjCMZf7Vxnnv-->Mock / 接口</td><td data-page-node-id="RmIt2zrgcOrQ2Udx3zrUqw"><!--pnid:MjkhdfDAau7VkIqeCLk8cC-->模拟后端、核对前后端约定</td><td data-page-node-id="vCA93fn33b6QJ4TKyVeyyT"><!--pnid:LMy5HKDyKEoHcA6z9obHkX-->后端未就绪、接口悄悄改字段</td><td data-page-node-id="F0AzyDxz7Gbn5Tw4yaQMgN"><!--pnid:lX0zeEScjXTyr1TYXqRo3k-->假数据先测前端，联调前对真接口</td><td data-page-node-id="O6v6sPYiMCWaiEUbnM7zcQ"><span data-page-node-id="V8gpAApqYrcQrCGTB0Lt33" class="pill p0"><!--pnid:Lx0xzz4E6qflKW8WgufoJq-->P0 必备</span></td><td data-page-node-id="7jyNLueKeM1JzPndwZ5saa" class="cost"><!--pnid:eLPyFf9TBrOWNZsEwecdf3-->低 · 开源</td></tr>
+<tr data-page-node-id="xjM0W4Cf9ssGtKPUxNpnkf"><td data-page-node-id="lfxP8hDwhBcK0CphV8LFO4" class="tool"><!--pnid:n0lqHE6V4K4ovKtIE6rQ5g-->Storybook + 截图比对<br data-page-node-id="NbXuIfrVMs0bfAPsIr650H"><!--pnid:FpUXWUmjxgLnUVIpMqifRo-->视觉回归</td><td data-page-node-id="aiyHXVYUJjCJJW9JAi0cwY"><!--pnid:cvNxWcqrI3yqSNMWZ5TTHk-->单独看组件、比对界面变化</td><td data-page-node-id="bo4HwmBhLg2BcM9mxeVmfk"><!--pnid:H4RdJrWLCeViJg6M1NTaP7-->按钮间距、颜色、排版不小心跑偏</td><td data-page-node-id="qE6RYaXOC0YHBpGbclKcYQ"><!--pnid:Gf7A1oLwBeRoihQ3ob865L-->改样式后自动截图，人工确认差异</td><td data-page-node-id="AZDyY4mEtwYuH1bEQhQI8b"><span data-page-node-id="zI3MYbgDotTDRFRi0S9qG7" class="pill p1"><!--pnid:vF3lo4OTDaieNwnWR7VoP6-->P1 近期</span></td><td data-page-node-id="HeGbdXcbi9aADIPHyIgXV9" class="cost"><!--pnid:oJU7AoYurFnWBHbuoQJn0u-->中 · 有付费版</td></tr>
+<tr data-page-node-id="gFm76Om5OGplakHJSDPgRV"><td data-page-node-id="ZU3869oNUsGBtsPVKzNbZX" class="tool"><!--pnid:ASla8sgbJFKfD0MMcuSAxD-->axe / Lighthouse / ZAP<br data-page-node-id="7GBrCcnOvL35Z1I8BVG7D0"><!--pnid:YXpqYspX2k1OsnOacYNU5i-->专项体检</td><td data-page-node-id="1EA4w0m2AW5WG6ECL6Dawy"><!--pnid:ZfnVFQu6wJy77sjlaVgljz-->无障碍、性能、安全扫描</td><td data-page-node-id="OycMEXELS0W7kIvVBvKHTB"><!--pnid:Jre6BaunDZ5HcdHR36k1iG-->读屏用不了、页面变慢、常见漏洞</td><td data-page-node-id="kdGNC84dc66uX2Q9o4OvhD"><!--pnid:AARGBcrXOoFmhGCszGWCbB-->发版前跑一次，不达标就拦下</td><td data-page-node-id="0wrdsBa846uIUsuaKTlUTi"><span data-page-node-id="iy70Cgg3q3B9DxW0NNunNA" class="pill p1"><!--pnid:HSW6RshtnmetpRwAkWkPtu-->P1 近期</span></td><td data-page-node-id="cDBqmpWpfuYJ7bm7dku9vw" class="cost"><!--pnid:Ro5qIxebHowJWcf32kmlCX-->低 · 开源</td></tr>
+<tr data-page-node-id="cM8TsfuITFrsWJZhFmfDrh"><td data-page-node-id="B1o8qK59VrWqCS4byqI27e" class="tool"><!--pnid:h7UrojtNPP7WwyDRRUPCkE-->Sentry + 合成监控<br data-page-node-id="TC2x3YGQLXvnfKA7tJ5F3M"><!--pnid:h3tqk7VNRs5DhQ5Vt99Mz3-->运行监控</td><td data-page-node-id="zIckUot2hhMQkks7JV6hAU"><!--pnid:tdH3VxPnP63buB0hQqEX8y-->盯真实用户报错与关键路径</td><td data-page-node-id="Mn7pI0dlvbWhyYWCjCI3g8"><!--pnid:PZo61V2v9WyD6iKfKXBidg-->「测试都过了但用户报错」</td><td data-page-node-id="QciK70zI31wiO8fC8d1R0y"><!--pnid:9N2dcSm92Fral2WSKMFL1o-->用户一报错立刻告警并带操作轨迹</td><td data-page-node-id="sIpa1SenD2BQuGGXkJKAK9"><span data-page-node-id="ZLi2mIUXacpRQ54tfbU6zn" class="pill p1"><!--pnid:A7AO79OB2ha2WegnQRMr4R-->P1 近期</span></td><td data-page-node-id="7gAd1JMyhVAT0BzYNmKS5l" class="cost"><!--pnid:qzHkIoZe04sAiVPkjPr6n5-->中～高 · 付费</td></tr>
+</tbody>
+</table>
+
+<h2 data-page-node-id="iDt36hrxmzipO36zIZX62u"><span data-page-node-id="yBFYgluJDVJQoTTx6LAmgn" class="num"><!--pnid:fhcqi1IdQNXqVoBUYW84MP-->03</span><!--pnid:Q7HKK4aY5NNYfBJ8U7TmVm-->每种工具的具体场景例子</h2>
+<p data-page-node-id="WF7sloFCYpshEzXrbZcYnT" class="lead"><!--pnid:KkzKK1DEoHVMrZ6w03VPtM-->每个工具配一个可对照的真实场景：发生了什么、工具怎么帮上忙、最终效益。日常沟通可直接引用这些例子。</p>
+
+<div data-page-node-id="bvS3RLsGfOud5sIxHZPmkM" class="scene">
+  <div data-page-node-id="zgxRoG7sYRfETbgus0S282" class="scene-head"><h3 data-page-node-id="qrKYVzZ06XI6qy93WpRKyS"><!--pnid:C8ccXOfhUsOmAXdAA5jCym-->Vitest + Testing Library</h3><span data-page-node-id="qoTa49je2QJMpPhYsAtYFb" class="tag"><!--pnid:oFW2d9B0DF4V92tds24npi-->单元 · 组件</span></div>
+  <div data-page-node-id="rPgA4Hv8HjZqtjs52o92B6" class="cols">
+    <div data-page-node-id="McycD4ygoYmBMfLv7Truh8" class="box"><div data-page-node-id="blIJQOtyR7EUOH40cyRFm3" class="lbl"><!--pnid:M3inyzmA9twZg3scDNKPKS-->具体例子</div><p data-page-node-id="e4zPBzl2rXldPDSSs5JAAp"><!--pnid:OxU6gVZoP93IbU6GqFB5WM-->购物车金额计算函数改了折扣逻辑，某次提交把「满 100 减 20」的门槛写成了 1000。开发本地保存时单测立刻变红，2 分钟内改回，问题没进测试环境。</p></div>
+    <div data-page-node-id="KbPe9ghxBYzlNzfA0pCmAA" class="box benefit"><div data-page-node-id="35tLYnXeIwAQtYZ69eALoJ" class="lbl"><!--pnid:guIj1441OUHqkCq8KrX8WH-->效益</div><p data-page-node-id="0UhBJd3JPkOJMRi7Jh4yv1"><!--pnid:TrZel1XgMbdp6ss2FwXBhm-->把逻辑类缺陷拦在开发手上，修复成本最低；组件测试还能断言「表单没填完时提交按钮不可点」这类用户可见行为。</p></div>
+  </div>
+</div>
+
+<div data-page-node-id="soA9sNii9UoTJ9Dn279oB2" class="scene">
+  <div data-page-node-id="XlGnKyVFowGlWgwDJVt9xy" class="scene-head"><h3 data-page-node-id="9iDTrjNCjGPSEsPmgDkhSa"><!--pnid:qYZlI4PBebAG611yywMtve-->Playwright / Cypress</h3><span data-page-node-id="09rV1VCU2Z9nI5r9Ndqwjr" class="tag"><!--pnid:lqWX7zWGi9h0ECy3P6oq10-->端到端</span></div>
+  <div data-page-node-id="tCR5wImDK6ip2q9UP7hbkX" class="cols">
+    <div data-page-node-id="hs7cJ65SkwDz3TW7gcQrnQ" class="box"><div data-page-node-id="xYjepCqAH5ZEca6UgNAs11" class="lbl"><!--pnid:Cg9UBXF5vpv8nzFzN6FqTq-->具体例子</div><p data-page-node-id="r3V9hGZQUEzPza0SVisRZE"><!--pnid:VEfJEn5JXhOFZBTeJ5LF3D-->电商「加购 → 填地址 → 用券 → 支付」主流程每天夜间自动跑。某次发版后优惠券按钮被新加的浮层挡住点不到，第二天上班前测试就报红，当天修复，用户几乎无感。</p></div>
+    <div data-page-node-id="B3w9PK6bSqhBxRAOOQGq1x" class="box benefit"><div data-page-node-id="QtHlFoNl4QvmCaQA3X2pzd" class="lbl"><!--pnid:kTLB8k9xjp47zFTxFSdWPJ-->效益</div><p data-page-node-id="pfHZhntEXDI5TCGqReYjL2"><!--pnid:jvIVKRvNv1NTqWCS5gc4s4-->守住最值钱的关键路径；失败时附截图与操作回放，定位从「猜」变成「看」，不必人工每天重复点一遍。</p></div>
+  </div>
+</div>
+
+<div data-page-node-id="16DdjBbyaRqOmDkZI77G0V" class="scene">
+  <div data-page-node-id="RiTmdRZxTNhC5xwVLnhYYL" class="scene-head"><h3 data-page-node-id="nkNRN4g7aKRWmHwEIVh6Y5"><!--pnid:tpDStDM2CcOJOP6LIHDpzg-->MSW + 契约测试</h3><span data-page-node-id="nH8wb0jJQtszUGF9uAyPR6" class="tag"><!--pnid:i2rSN6yThhqnwqqWcWpaGU-->Mock · 接口</span></div>
+  <div data-page-node-id="FSPcL03eaZ2HlUe5Fjl7f3" class="cols">
+    <div data-page-node-id="8r5TlELABck4ANXveRcRoC" class="box"><div data-page-node-id="nlpZdNMubvwTVsP9XtgUaS" class="lbl"><!--pnid:2LbrJSWHI9qhhn2swkOMvg-->具体例子</div><p data-page-node-id="lMw5ovj7O7y8NPW8YledDa"><!--pnid:KRZstPtxpuapAIxtIHkI2X-->后端还没开发完，前端用 MSW 模拟「用户列表」接口先把页面做出来。联调前契约测试发现后端把字段 <code data-page-node-id="0SIekhfTQ72OmeY1OEtTL4" data-pnid-children="CL48OF3xC6kJG8UKu8eyPS">nickname</code><!--pnid:ZgGDi6BTd53IG2xtx2qxmU--> 改成了 <code data-page-node-id="vrB7efZgfMnxAbatLyKY8k" data-pnid-children="G0opNEvi20mplrUG0FOAP4">displayName</code><!--pnid:MZQSMcidSDaxPG3LYwD05P-->，双方当场对齐，避免上线后页面显示空白。</p></div>
+    <div data-page-node-id="jkfWe5YUcaLFkwEQLh4BnW" class="box benefit"><div data-page-node-id="Gxst4ryGEdhVv2UunlmLCi" class="lbl"><!--pnid:scLHZu4UgmnURyZFMPcr9J-->效益</div><p data-page-node-id="RpdsVTbWeOoue0HxIY0Xdc"><!--pnid:X3ZKPrP9SYGF5lP0hKx7RX-->前端不再被后端进度卡住；接口变更提前暴露，把「联调才炸」变成「写代码就知道」。</p></div>
+  </div>
+</div>
+
+<div data-page-node-id="HG7bNdTQmDvl4Xhyjcvaot" class="scene">
+  <div data-page-node-id="aNkehu1Yc8ckPyRyFz0qAf" class="scene-head"><h3 data-page-node-id="Mare4mIP3bPaGluwUXxMZ7"><!--pnid:lPjordQ8ualGY3jHcioRqn-->Storybook + 截图比对</h3><span data-page-node-id="W1uSlfJgjFhmagLQOuywto" class="tag"><!--pnid:CXQFsY5Uuyn4KhrsczMWVm-->视觉回归</span></div>
+  <div data-page-node-id="sfWwJtnWMLnh4QvqbCHb4v" class="cols">
+    <div data-page-node-id="M8Q2PYB0vzJmu6StEjcexe" class="box"><div data-page-node-id="7Ed0uvS0t5daUueLPVLp7Y" class="lbl"><!--pnid:zWUSTtNC5C0KNDJoQTox9m-->具体例子</div><p data-page-node-id="uy7oUvWEvyhGPjCHRp2iwL"><!--pnid:ZB9SNselkyNPS2q1DEn0ND-->设计系统把主按钮圆角从 4px 改成 8px。Storybook 列出所有组件状态，截图比对自动标出哪些界面视觉变了，人工确认是有意改版后更新基线；同时发现一个老页面漏改仍是旧样式。</p></div>
+    <div data-page-node-id="Wc8mJDT7bc4TzRCwaFQoEo" class="box benefit"><div data-page-node-id="KByEErCKKGqN0NXqdWvN2p" class="lbl"><!--pnid:XIxKNBZgPYoFdXxCmT3JbU-->效益</div><p data-page-node-id="zjoj0afYoY6pgq3LxUYWKu"><!--pnid:LdhGnk7LRqLQapNOTxJLLR-->功能测试看不出的像素漂移被抓住；视觉差异集中成一张清单供人裁决，而不是散落在各页面靠肉眼找。</p></div>
+  </div>
+</div>
+
+<div data-page-node-id="hggoBKMVI6gCJkr6CAgwt1" class="scene">
+  <div data-page-node-id="JTA4KfZrHJmTaZw6tSazVa" class="scene-head"><h3 data-page-node-id="g0JhtMW0p35heAcDEyjVJu"><!--pnid:bLCbyJkW0XcZdhkDH0npIs-->axe · Lighthouse · ZAP</h3><span data-page-node-id="TPDYhNhQj7XJKAFm7MU0XB" class="tag"><!--pnid:mqxJ13H17cwDVtks8SLKsX-->发版前体检</span></div>
+  <div data-page-node-id="CxLbXNMq9CMSsKBET90tEp" class="cols">
+    <div data-page-node-id="GcPXTLRznV8x1Oi1HK7z0n" class="box"><div data-page-node-id="RZliEglzj9DFQrF46fdfHK" class="lbl"><!--pnid:5tLVGzIDklEt4BQNFiIWY3-->具体例子</div><p data-page-node-id="KUwgDph0QrfguJMIocwGb2"><!--pnid:sMD5C7C5h7mwCnOE2fT53I-->发版前体检：axe 发现注册页「同意条款」复选框没关联文字，读屏用户听不出是什么；Lighthouse 发现新加的客服插件让首屏从 2s 涨到 5s，分数跌破预算拦下构建；ZAP 扫出登录接口缺少速率限制。</p></div>
+    <div data-page-node-id="3iI1z2CbitQGrTgcVzLk7e" class="box benefit"><div data-page-node-id="UGnWguYlbAl9EMlVsAKhPh" class="lbl"><!--pnid:x8v8tNL00BmEwfajCM4tm4-->效益</div><p data-page-node-id="AitJ2caDnl8Qlsm0JWk2FD"><!--pnid:XFQoxmer5faTS6YP2ULHpI-->三个问题在上线前一次性发现并修复，避免无障碍投诉、转化下降和暴力破解风险；都是免费开源工具，接入成本低。</p></div>
+  </div>
+</div>
+
+<div data-page-node-id="taAIFBcUNBswSxNQGRzXri" class="scene">
+  <div data-page-node-id="R0JHzQXzlzSA0RsgImP6XY" class="scene-head"><h3 data-page-node-id="3WdYl4zQY3uEbpVUMsqq49"><!--pnid:mO4OJnIdyHdCUHl7O1e6eH-->Sentry + 合成监控</h3><span data-page-node-id="DJnK63dIcEl0iNEJZnumaf" class="tag"><!--pnid:BFdWN48C9GQRZjFSyHykl1-->上线后监控</span></div>
+  <div data-page-node-id="LwybLQkrTUbvaYRRBNUe6h" class="cols">
+    <div data-page-node-id="qDhm6ze0ipU3eDP1P9c0pK" class="box"><div data-page-node-id="ZIicUVz08jTIJenVsthFuC" class="lbl"><!--pnid:khXrjphF4JDpHqylM6pYvo-->具体例子</div><p data-page-node-id="2jQAkL28kFiIH0mpXjp6jC"><!--pnid:Grx9zqIJitGusN9KucpEzI-->上线后 Sentry 收到一批「支付页白屏」报错，附带浏览器版本与点击路径，QA 10 分钟定位到是某旧版 Safari 不支持新语法，先回滚再补兼容。合成监控每 5 分钟自动模拟一次登录下单，连续失败就告警。</p></div>
+    <div data-page-node-id="fAUcJv4MQpRdPEEBumwCQM" class="box benefit"><div data-page-node-id="x3ZgKmIeCoNcSaAshUXrHk" class="lbl"><!--pnid:RGB3q3y2wuwEVlr0vaiHP5-->效益</div><p data-page-node-id="2stqkzJmXo14QKwhWVht0D"><!--pnid:CeIPhIHBd41z4CUhCchB2b-->覆盖 CI 测不到的真实环境；从「等用户来投诉」变成「用户还没反馈就发现」，把故障影响面压到最小。</p></div>
+  </div>
+</div>
+
+<h3 data-page-node-id="r5IJdI5hMMhZnbHSjp1j6k" style="margin-top:30px"><!--pnid:P3TsNdEooIhhFj5oLwnAYI-->扩展工具箱（按需引入）</h3>
+<table data-page-node-id="fmLTA9gYlm7ojKfva78Byw">
+<thead data-page-node-id="tXBA4TavtRr3yFLiDPxFWO"><tr data-page-node-id="zIt5RHFgVkJzHbDJ8QC80a"><th data-page-node-id="nTagUXCgM08tKwvs4SEfdH"><!--pnid:U9aTUNOAfZ2druN461mngR-->工具</th><th data-page-node-id="2EgdSCnCuHzQIzKakxVqxg"><!--pnid:xP9qe0SIs2nEpkKvIiIk8A-->用途</th><th data-page-node-id="fTQ4vXoLwvU4nYO7TxSq38"><!--pnid:gf19FX0HKWkrIDyNMNXnh5-->一个具体例子</th></tr></thead>
+<tbody data-page-node-id="PWypB9PG9gpXgHsH6Yu4jv">
+<tr data-page-node-id="E6tkzeNrfGNGnDA0M1Skn0"><td data-page-node-id="Ve0px7L7NNruubBkxkMLLW" class="tool"><!--pnid:czSs9Fs8p9HhI99LNI4j8y-->Faker / 数据工厂<br data-page-node-id="xGvCj5Q9pUuFScL5Msb36N"><!--pnid:n7fVkElZGBpzT0H1ulhxiP-->Testcontainers</td><td data-page-node-id="QcjvedwwYt7mxrQWsq45k2"><!--pnid:4nlyHbEkCLLBBF1jP5bmZm-->测试数据准备</td><td data-page-node-id="lRUdGq50hdO1cSmeufBOXH"><!--pnid:aRzBBceySa8DKHPuDR58Rx-->测试要「有 5 个订单的 VIP 用户」，用工厂临时生成唯一邮箱与 ID，跑完即弃，不再出现「谁把共享数据改坏了」。</td></tr>
+<tr data-page-node-id="uf9jrnyQejenXi8K3iizVR"><td data-page-node-id="L2GLX1ygEMAuv91QbYo46l" class="tool"><!--pnid:G1s7mF7pOnSGYnan8xqS7o-->Jira / Linear + 报告</td><td data-page-node-id="ocqC6Rhliq5abytRtZGcLw"><!--pnid:l3ZrB8psRXwnbaWNUL90OD-->缺陷记录与追踪</td><td data-page-node-id="ji0X8MzQOvDcWcSfDYaSKx"><!--pnid:N09m48kZorwG8d9jN3AEVt-->测试失败后自动建单，附上截图、报错日志和 trace；建单前先查重，避免同一个问题被提三次。</td></tr>
+<tr data-page-node-id="CVYyftqMK1pweTOufVBkdw"><td data-page-node-id="MAxz25ruCORY2NCmCQMLJQ" class="tool"><!--pnid:JROlZXlJFl6rcxScXReTVg-->k6 / Lighthouse CI</td><td data-page-node-id="BtEq34gev8OPY30cZX20DG"><!--pnid:wIHJXzqGNtWX2GUw9dBAwJ-->性能与负载</td><td data-page-node-id="LdCfU2opKwKAIEwzxvni5d"><!--pnid:jBghJF8qqlQlhhBszHFmhF-->大促前模拟 1000 人同时抢购，发现 800 并发时响应超过 2s 阈值，提前扩容，活动当天平稳。</td></tr>
+<tr data-page-node-id="ds2OB3jE3iqDwJaxaoM3to"><td data-page-node-id="ul9y9vBIQYLSvx811JMNfw" class="tool"><!--pnid:znSU3UGDV4LCNDYshmo2yU-->BrowserStack 等<br data-page-node-id="HRfcLTCj7Wjo5MKp1oGRrW"><!--pnid:aD2B1cCs3D886BLQaDqIUR-->真机云</td><td data-page-node-id="BcNBF97yaRasCzSKAZAVuE"><!--pnid:S17c4DAwM8shXDSH8ZGiQI-->跨浏览器 / 真机</td><td data-page-node-id="frertTGOHSteSWuk5HCeWm"><!--pnid:LDrJGjU7w27flNFRXmfS35-->用户反馈 iPhone 上按钮重叠，本地模拟没复现；用真机云一看是某 Safari 版本的布局问题，针对性修复。</td></tr>
+<tr data-page-node-id="tIXO9dycRVW0d9GvSZWlKH"><td data-page-node-id="9DTJH0PfT82RbM2G0B8KRk" class="tool"><!--pnid:0sG6FpwyLSOz71RRv0aneG-->Charles / Fiddler</td><td data-page-node-id="bDTwlusS85mfP6XjicEtlG"><!--pnid:LHcmTvwCUiwHVJekGc9rd0-->抓包与弱网模拟</td><td data-page-node-id="D7stNodsdEj4WnTkFAGr9o"><!--pnid:tAMLhtex9AXUzCTlVzPCXb-->把网络限速到 3G 测页面，发现图片加载失败时没有占位图、布局跳动，补上降级样式。</td></tr>
+</tbody>
+</table>
+
+<h2 data-page-node-id="PRDey1XPuCHvB5Q5ff98pk"><span data-page-node-id="OneBGJ0gXNK3nWaGXckPeP" class="num"><!--pnid:5P2adZGTthBkqfaDXYQ5Ca-->04</span><!--pnid:BYGDv0rOSBI5B1PHYpdIwe-->落地建议</h2>
+<p data-page-node-id="niw9qBtuGvCfC8BzWtvXp6" class="lead"><!--pnid:Z3tiehzBK6lmiwRbV7rBpf-->按「先快后稳、先免费后付费」的顺序推进，每阶段有明确目标，避免一次上齐导致维护失控。</p>
+<div data-page-node-id="WxM2E3csNvqCMiDIp9AXAL" class="roadmap">
+  <div data-page-node-id="kKiJ01gyFJ0veqS1TOoH9k" class="step"><div data-page-node-id="jBrUwKAwmOCauLO3OVrkMD" class="idx"><!--pnid:9krgUOzcKBvC69VWk6ZkFJ-->阶段 1</div><h3 data-page-node-id="74GvToxXtqOcgDVEbkMjLx"><!--pnid:Gst6E30FUigVXXyxiTOnWQ-->基础速度层</h3><p data-page-node-id="FuRRYk7cHaWjs6JYKtALDx"><!--pnid:R5Lx6QIL6QvGkozzRTIOrK-->接入 Vitest + Testing Library 覆盖逻辑与核心组件；网络请求收敛到 MSW；Lint 与类型检查常开。</p><span data-page-node-id="Q5K6vQdfiK3ej4Y4cteyvp" class="goal"><!--pnid:9RHWcxapzpQkUFizh1F1SA-->目标：秒级反馈</span></div>
+  <div data-page-node-id="nxXHtJtMhPh4DS4MtiijJL" class="step"><div data-page-node-id="ITj7vKZOKC4vifYzu5FsZN" class="idx"><!--pnid:CzDHaddYJVMmOuKmRiNuSE-->阶段 2</div><h3 data-page-node-id="x8GaPUKBt5NqbZH8crzXxh"><!--pnid:3b4iUd7U0ZIriCEsu2W5Fg-->核心防线层</h3><p data-page-node-id="fSTWfjZIGsvQ8Q514DtL1W"><!--pnid:dI6yt4T5OTEuoDZoPbFZFg-->Playwright 覆盖 5～10 条关键旅程并进 CI；同时接入 axe、Lighthouse CI、ZAP 基线扫描。</p><span data-page-node-id="fCfd0CW4B2EmtYYT2XM5K6" class="goal"><!--pnid:oAl63Qijv9Z4Un3IPR81cK-->目标：合并前拦住高风险回归</span></div>
+  <div data-page-node-id="SPfqujJAOFBWzreYaAciwQ" class="step"><div data-page-node-id="8GAjxrECVQnN1gt6Cl0lzW" class="idx"><!--pnid:TC2PApADTp2lJqXQQHNITw-->阶段 3</div><h3 data-page-node-id="rH8tAx4rbaLCQXc1d86gRq"><!--pnid:F1R1C3u2SRE4ixYzyXTglg-->稳定性层</h3><p data-page-node-id="RVpaEd8rO2PH3B8TmBmtyR"><!--pnid:tf2VbzJH2JOQBk5824vSmu-->数据工厂 + 固定种子、并行隔离；视觉回归只对稳定组件做基线；建立 flaky 隔离清单与周报。</p><span data-page-node-id="KZVIftSPrJe34zfN8muyN3" class="goal"><!--pnid:HdDjBrVCyyV3cVjqPgj2Ci-->目标：让绿灯可信</span></div>
+  <div data-page-node-id="0kDuuKlniIfucx89IVyYq0" class="step"><div data-page-node-id="m24kI75GlGOjn4MzlgViBA" class="idx"><!--pnid:cx29wjcIdZAlmUIEofYPus-->阶段 4</div><h3 data-page-node-id="iZT6v9eGvhMxdUq9Ihgw4K"><!--pnid:gYVa2xbajZoRY6q3F3Hih8-->智能化闭环层</h3><p data-page-node-id="fGPEuuPq1ktKpUcWjpfF02"><!--pnid:FT5Lree68rx6QR21yNkjbO-->测试失败自动建单（含查重与附件）；Sentry + 合成监控做上线信号；按需评估真机云或 AI 辅助。</p><span data-page-node-id="XS53lhtgsEllu6IDovshXH" class="goal"><!--pnid:WLKbnsE6LF9gk72tvN0g3L-->目标：从找 Bug 到控风险</span></div>
+</div>
+<p data-page-node-id="xGBiWfE8IqnOWoSdZR8KQn" class="note"><!--pnid:nnCAfmME1lkBffDVmwkLbq-->衡量是否见效，盯这几个指标即可：<strong data-page-node-id="GiGuapu8vgXokEAKjWY4Q0"><!--pnid:PKhFdhKT0OD75YmuAbioOX-->回归周期</strong><!--pnid:ds3XLIAGzPjhDTIDM13XYy-->（天 → 小时）、<strong data-page-node-id="hB1qibWQrIkTVwZUv9xMQ9"><!--pnid:CPka655oMQ9YbDlTb43nNJ-->flaky 率</strong><!--pnid:IvqNbh9V052vtci2Xuxrjx-->（控制在 2–5%）、<strong data-page-node-id="GNfxrWfkkmSeytGKsowLcS"><!--pnid:FtmKtljPbcf46IOoedGXpj-->有效失败率</strong><!--pnid:uGOTDauk2r67qlBU7rNhPp-->（红灯里真问题的占比）、<strong data-page-node-id="iXK9gM01urJSdbQ9sNmBHN"><!--pnid:hRP9vGRJ2V1FWPn1TsDw5U-->缺陷逃逸率</strong><!--pnid:CHUOyb89XDPviYvARk1hn0-->（漏到线上的比例）、<strong data-page-node-id="ac9iMvzR4djgxVIoarUOju"><!--pnid:NnLpDQU3ZY17kP3cxgt4ZA-->MTTR</strong><!--pnid:9noAhWERQs3Au4lMAeAXcf-->（定位与修复耗时）。</p>
+
+<footer data-page-node-id="4bgi5TSCBgmzyBMu6HQfwu"><!--pnid:Fc5e7aXTPQQiHuhEqf3VCW-->
+  本指南为团队内部选型参考。工具能力与定价会随版本调整，正式采购前请核对各产品官方文档。建议每季度复盘一次：哪些测试抓到了真问题、哪些成了噪声，据此调整投入方向。
+</footer>
+</article>
+</body>
+</html>
