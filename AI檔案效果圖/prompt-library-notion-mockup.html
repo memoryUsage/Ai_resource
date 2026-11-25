@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人化 Prompt Statement 庫｜Notion 配置效果圖</title>
+<style>
+:root{
+  --bg:#ffffff; --side:#f7f7f5; --ink:#37352f; --muted:#787774; --faint:#9b9a97;
+  --line:#e9e9e7; --hover:#f1f1ef; --blue:#2383e2; --blue-soft:#e7f3ff;
+  --green:#0f7b6c; --green-soft:#ddf3ec; --amber:#9a6700; --amber-soft:#fbf3db;
+  --red:#c4554d; --red-soft:#fbe4e2; --purple:#7d5ba6; --purple-soft:#f0eaf6;
+  --shadow:0 1px 3px rgba(15,15,15,.08),0 8px 24px rgba(15,15,15,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--bg);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.sidebar{width:248px;flex:0 0 248px;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:10px 8px;font-size:13.5px}
+.ws{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;font-weight:600;cursor:pointer}
+.ws:hover{background:var(--hover)}
+.avatar{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,#5b8def,#8b6fd6);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700}
+.side-group{margin-top:14px}
+.side-title{font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.04em;padding:6px 10px;text-transform:uppercase}
+.side-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;color:var(--muted);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side-item:hover{background:var(--hover)}
+.side-item.active{background:#eaeae8;color:var(--ink);font-weight:600}
+.side-item .ic{width:18px;text-align:center;flex:0 0 18px;opacity:.8}
+.side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;font-size:12px;color:var(--faint)}
+.side-foot div{padding:5px 10px;display:flex;gap:8px;align-items:center}
+
+/* ---------- Main ---------- */
+.main{flex:1;min-width:0;padding:0 0 90px}
+.crumb{height:42px;display:flex;align-items:center;gap:6px;padding:0 54px;color:var(--muted);font-size:12.5px;border-bottom:1px solid transparent}
+.crumb span{opacity:.7}
+.page{max-width:1180px;margin:0 auto;padding:26px 54px 40px}
+.emoji-title{font-size:44px;line-height:1.1;margin-bottom:6px}
+h1{font-size:38px;line-height:1.2;letter-spacing:-.02em;font-weight:700;margin-bottom:12px}
+.callout{display:flex;gap:12px;background:#f7f7f5;border-radius:8px;padding:14px 16px;margin:14px 0 18px;font-size:13.5px;color:#45443f;border:1px solid var(--line)}
+.callout .bulb{font-size:18px;flex:0 0 auto}
+.callout b{color:var(--ink)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.qbtn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 12px;font-size:13px;cursor:pointer;color:var(--ink);transition:.15s;font-weight:500}
+.qbtn:hover{background:var(--hover);border-color:#d9d9d6;transform:translateY(-1px)}
+.qbtn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.qbtn.primary:hover{background:#000}
+.qbtn.ghost{background:transparent}
+
+/* ---------- Database ---------- */
+.db{border-top:1px solid var(--line);padding-top:8px}
+.db-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.views{display:flex;gap:2px;align-items:center;border-bottom:1px solid var(--line);flex:1;min-width:320px}
+.view-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 12px 10px;font-size:13.5px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.view-tab:hover{color:var(--ink)}
+.view-tab.active{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.db-tools{display:flex;align-items:center;gap:8px}
+.search{border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:13px;width:190px;outline:none;background:#fff;font-family:inherit}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft)}
+.newbtn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;gap:5px;align-items:center;font-family:inherit}
+.newbtn:hover{background:#1a76cf}
+.filters{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0 14px}
+.fbtn{position:relative}
+.fsel{appearance:none;border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 28px 6px 10px;font-size:12.5px;cursor:pointer;color:#55544f;font-family:inherit;min-width:112px}
+.fsel:hover{background:var(--hover)}
+.fbtn:after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--faint);font-size:11px}
+.fclear{border:none;background:none;color:var(--muted);font-size:12.5px;cursor:pointer;padding:6px}
+.fclear:hover{color:var(--red)}
+.fcount{font-size:12px;color:var(--faint);margin-left:auto}
+
+/* table */
+.table-wrap{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:#fbfbfa;text-align:left;font-weight:600;color:var(--muted);font-size:12px;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:10px 12px;border-bottom:1px solid #f0f0ee;vertical-align:middle}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:#fafafa}
+tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--ink);line-height:1.35}
+.t-name small{display:block;color:var(--faint);font-weight:400;font-size:11px;margin-top:2px}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:500;margin:1px 3px 1px 0;white-space:nowrap}
+.tag.溝通寫作{background:var(--amber-soft);color:#8a5a00}
+.tag.資訊整理{background:var(--blue-soft);color:#1b6db5}
+.tag.分析決策{background:var(--red-soft);color:#a8423a}
+.tag.學習翻譯{background:var(--green-soft);color:#0b6b5d}
+.tag.創意發想{background:var(--purple-soft);color:#6c4c94}
+.tag.工作流程{background:#ecefed;color:#52605a}
+.tag.主力常用{background:#dff3e4;color:#237a3b}
+.tag.草稿測試中{background:#fbf0d9;color:#9a6700}
+.tag.已封存{background:#eee;color:#868682}
+.tag.plain{background:#f1f1ef;color:#666}
+.chk{width:15px;height:15px;border:1.5px solid #c7c7c4;border-radius:4px;display:inline-grid;place-items:center;font-size:11px;color:#fff}
+.chk.on{background:var(--blue);border-color:var(--blue)}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(6,minmax(190px,1fr));gap:12px;align-items:start;overflow-x:auto;padding-bottom:8px}
+.col{background:#fbfbfa;border-radius:8px;padding:10px;min-height:120px;border:1px solid var(--line)}
+.col-h{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:600;padding:2px 4px 10px;color:#555}
+.col-h .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.mini{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,.03);cursor:pointer}
+.mini:hover{border-color:#d3d3d0;box-shadow:var(--shadow)}
+.mini .mt{font-size:12.5px;font-weight:600;line-height:1.4;margin-bottom:8px}
+.mini .mm{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.mini .mm .tag{font-size:10px;padding:1px 6px}
+
+/* empty */
+.empty{padding:44px;text-align:center;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:8px}
+
+/* ---------- workflow strip ---------- */
+.flow{position:fixed;left:248px;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:11px 54px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:40;box-shadow:0 -4px 20px rgba(0,0,0,.03)}
+.fl{font-size:11px;color:var(--faint);margin-right:6px;letter-spacing:.05em}
+.step{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:20px;border:1px solid var(--line);font-size:12.5px;color:var(--muted);background:#fff;transition:.25s;cursor:pointer}
+.step b{width:18px;height:18px;border-radius:50%;background:#eee;color:#888;display:grid;place-items:center;font-size:10px;transition:.25s}
+.step.on{border-color:var(--blue);background:var(--blue-soft);color:#125a9c;font-weight:600;box-shadow:0 0 0 3px rgba(35,131,226,.10)}
+.step.on b{background:var(--blue);color:#fff}
+.step.done{border-color:#a9d9b8;background:#eefaf1;color:#237a3b}
+.step.done b{background:#2e9b52;color:#fff}
+.arrow{color:#c9c9c6;font-size:13px}
+.flow-hint{font-size:11.5px;color:var(--faint);margin-left:8px}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(15,15,15,.32);z-index:60;opacity:0;pointer-events:none;transition:.2s}
+.overlay.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(860px,94vw);background:#fff;z-index:61;transform:translateX(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:-12px 0 40px rgba(0,0,0,.12);overflow-y:auto;padding:34px 44px 60px}
+.drawer.show{transform:translateX(0)}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:4px}
+.dclose{border:none;background:#f2f2f0;width:30px;height:30px;border-radius:6px;cursor:pointer;color:var(--muted);font-size:17px;flex:0 0 auto}
+.dclose:hover{background:#e6e6e3}
+.dtitle{font-size:25px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.dmeta{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0 22px;align-items:center}
+.dsec{margin-bottom:24px}
+.dlabel{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.03em;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.dlabel .n{background:#f0f0ee;color:#777;border-radius:4px;width:19px;height:19px;display:grid;place-items:center;font-size:10px}
+.dbody{font-size:13.5px;color:#44433e;line-height:1.75}
+.dbody ul{margin:4px 0 0 18px}
+.dbody li{margin:3px 0}
+.dbody .no{color:var(--faint)}
+.codewrap{position:relative;border:1px solid #e4e4e1;border-radius:8px;background:#fbfbfa;overflow:hidden}
+.codebar{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#f4f4f2;border-bottom:1px solid #e8e8e5;font-size:11px;color:var(--faint)}
+.copybtn{border:1px solid var(--line);background:#fff;border-radius:5px;padding:4px 9px;font-size:11.5px;cursor:pointer;color:var(--ink);font-weight:600;font-family:inherit}
+.copybtn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.copybtn.ok{background:#2e9b52;color:#fff;border-color:#2e9b52}
+pre{white-space:pre-wrap;word-break:break-word;font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:12.3px;line-height:1.75;padding:15px 16px;color:#2f2e2a;margin:0;max-height:340px;overflow-y:auto}
+.vars{background:#fafaf8;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:10px}
+.vars-t{font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:9px;display:flex;justify-content:space-between}
+.var-row{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;margin-bottom:7px}
+.var-row label{font-family:"SFMono-Regular",Consolas,monospace;font-size:11.5px;color:var(--purple);background:var(--purple-soft);padding:3px 7px;border-radius:4px;justify-self:start}
+.var-row input{border:1px solid var(--line);border-radius:5px;padding:6px 9px;font-size:12.5px;font-family:inherit;outline:none;background:#fff;width:100%}
+.var-row input:focus{border-color:var(--purple);box-shadow:0 0 0 2px rgba(125,91,166,.12)}
+.varhint{font-size:10.5px;color:var(--faint);margin-top:2px}
+.replace-note{font-size:11px;color:var(--green);margin-top:8px;min-height:16px}
+.tv{border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.tv-row{display:grid;grid-template-columns:170px 1fr;border-bottom:1px solid var(--line);font-size:12.5px}
+.tv-row:last-child{border-bottom:none}
+.tv-row .k{background:#fafaf8;padding:8px 11px;color:var(--muted);font-weight:600;border-right:1px solid var(--line)}
+.tv-row .v{padding:8px 11px;color:#444}
+.ex{background:#fbf7ee;border-left:3px solid var(--amber);padding:11px 14px;border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.7;color:#52493a}
+.ex .lbl{font-weight:700;color:var(--amber);font-size:11px;letter-spacing:.04em;margin-bottom:3px}
+.ver{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rate{flex:1;min-width:180px;height:8px;background:#eee;border-radius:6px;overflow:hidden;max-width:280px}
+.rate i{display:block;height:100%;background:linear-gradient(90deg,#5ec27a,#2e9b52);border-radius:6px}
+.toggle{border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-top:8px}
+.toggle summary{cursor:pointer;padding:9px 12px;background:#fafaf8;font-size:12.5px;font-weight:600;color:var(--muted);list-style:none;display:flex;align-items:center;gap:8px}
+.toggle summary::-webkit-details-marker{display:none}
+.toggle summary:before{content:"▸";transition:.2s;display:inline-block}
+.toggle[open] summary:before{transform:rotate(90deg)}
+.toggle .tcontent{padding:12px;border-top:1px solid var(--line);font-size:12px;color:#666;line-height:1.7}
+.old{padding:8px 10px;background:#fff;border:1px dashed var(--line);border-radius:6px;margin-bottom:7px}
+.old b{color:var(--ink)}
+
+/* toast */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;padding:9px 16px;border-radius:7px;font-size:12.5px;z-index:90;opacity:0;pointer-events:none;transition:.22s;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* annotations */
+.anno{position:absolute;z-index:35;pointer-events:none}
+.abadge{display:inline-flex;align-items:center;gap:5px;background:var(--ink);color:#fff;padding:4px 9px;border-radius:5px;font-size:10.5px;font-weight:600;box-shadow:var(--shadow)}
+.abadge span{background:rgba(255,255,255,.2);border-radius:3px;padding:0 4px}
+.page{position:relative}
+@media(max-width:1100px){.board{grid-template-columns:repeat(3,minmax(190px,1fr))}.sidebar{display:none}.flow{left:0}.page{padding:22px}.crumb{padding:0 22px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="ws"><div class="avatar">P</div> 個人工作區 <span style="margin-left:auto;color:#aaa">⌄</span></div>
+    <div class="side-group">
+      <div class="side-item"><span class="ic">⌕</span> 搜尋</div>
+      <div class="side-item"><span class="ic">◷</span> 更新</div>
+      <div class="side-item"><span class="ic">⌂</span> 首頁</div>
+      <div class="side-item"><span class="ic">▣</span> 收件匣</div>
+    </div>
+    <div class="side-group">
+      <div class="side-title">私人</div>
+      <div class="side-item active"><span class="ic">🧠</span> 個人 Prompt 庫</div>
+      <div class="side-item"><span class="ic">📚</span> 閱讀清單</div>
+      <div class="side-item"><span class="ic">📓</span> 每日筆記</div>
+      <div class="side-item"><span class="ic">🎯</span> 目標追蹤</div>
+    </div>
+    <div class="side-group">
+      <div class="side-title">收藏</div>
+      <div class="side-item"><span class="ic">⭐</span> 主力常用清單</div>
+      <div class="side-item"><span class="ic">🗂</span> 主分類看板</div>
+    </div>
+    <div class="side-foot">
+      <div>⚙️ 設定與成員（1 / 1）</div>
+      <div>📤 上次匯出：2025-01-05</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="crumb">私人 <span>/</span> 個人 Prompt 庫</div>
+    <div class="page">
+      <div class="emoji-title">🧠</div>
+      <h1>個人化 Prompt Statement 庫</h1>
+      <div class="callout">
+        <div class="bulb">💡</div>
+        <div><b>一站式收斂你的高頻指令。</b>操作流程：<b>新增卡片 → 測試微調 → 一鍵複製</b>。維持<b>單人工作區</b>（1/1 成員）以避免免費版 block 上限；提示詞統一放 <code>/code</code> 区块，右上 Copy 即可跨平台貼至 ChatGPT / Claude / Gemini。每季第一週記得匯出備份。</div>
+      </div>
+      <div class="quick">
+        <button class="qbtn primary" id="qNew">＋ 新增卡片</button>
+        <button class="qbtn" id="qStar">⭐ 只看主力</button>
+        <button class="qbtn" id="qSync">🔗 快捷工具同步</button>
+        <button class="qbtn" id="qExport">📤 季度匯出提醒</button>
+        <button class="qbtn ghost" id="qAnno">🏷 顯示設計標註</button>
+      </div>
+
+      <div id="annoLayer"></div>
+
+      <section class="db" id="dbsec">
+        <div class="db-head">
+          <div class="views" id="views">
+            <div class="view-tab active" data-v="main">📋 主力常用清單</div>
+            <div class="view-tab" data-v="board">🗂 主分類看板</div>
+            <div class="view-tab" data-v="draft">✏️ 草稿整理區</div>
+          </div>
+          <div class="db-tools">
+            <input class="search" id="search" placeholder="🔍 搜尋範本名稱／標籤…">
+            <button class="newbtn" id="btnNew">＋ New</button>
+          </div>
+        </div>
+        <div class="filters">
+          <div class="fbtn"><select class="fsel" id="fStatus"><option value="">狀態：全部</option><option>主力常用</option><option>草稿測試中</option><option>已封存</option></select></div>
+          <div class="fbtn"><select class="fsel" id="fCat"><option value="">主分類：全部</option><option>溝通寫作</option><option>資訊整理</option><option>分析決策</option><option>學習翻譯</option><option>創意發想</option><option>工作流程</option></select></div>
+          <div class="fbtn"><select class="fsel" id="fTag"><option value="">情境標籤：全部</option><option>商務</option><option>客戶</option><option>會議</option><option>日常</option><option>決策</option><option>寫作</option><option>翻譯</option><option>報告</option></select></div>
+          <div class="fbtn"><select class="fsel" id="fPlat"><option value="">適用平台：全部</option><option>ChatGPT</option><option>Claude</option><option>Gemini</option></select></div>
+          <button class="fclear" id="fClear">清除篩選</button>
+          <span class="fcount" id="fcount"></span>
+        </div>
+        <div id="viewContent"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="flow">
+  <span class="fl">日常動線</span>
+  <div class="step" data-s="1" id="step1"><b>1</b> 新增卡片</div><span class="arrow">→</span>
+  <div class="step" data-s="2" id="step2"><b>2</b> 測試微調（變數替換）</div><span class="arrow">→</span>
+  <div class="step" data-s="3" id="step3"><b>3</b> 一鍵複製使用</div>
+  <span class="flow-hint" id="flowHint">點擊上方 New 開始</span>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer"></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- Data ---------------- */
+const CATS={
+ "溝通寫作":"#e8a900","資訊整理":"#3b8ee0","分析決策":"#d5564d",
+ "學習翻譯":"#1a9b86","創意發想":"#9a6cc4","工作流程":"#78857e"
+};
+const cards=[
+ {
+  id:1,name:"[溝通寫作] 高情商商務與日常訊息草擬",cat:"溝通寫作",tags:["商務","客戶","日常"],status:"主力常用",plat:["ChatGPT","Claude","Gemini"],sync:true,
+  purpose:"把「不太好開口」的訊息，改成得體、有分寸、對方讀起來舒服的版本，同時保住自己的訴求。",
+  when:["需要延期、婉拒、催覆、道歉或澄清時","對象是客戶、主管或跨部門同事","想兼顧關係與效率的 Email／LINE／Slack 訊息"],
+  whenNot:["純粹的資訊通知（無需情緒拿捏）","需要法律效力的正式合約條款","對方明確要求「直接講重點、不用修飾」"],
+  prompt:`你是一位擅長職場溝通的寫作顧問，語氣溫和、專業且有分寸感。
+
+【任務】
+請根據以下資訊，草擬一則「[訊息類型]」訊息，對象是 [對象身份]，場合為 [溝通場合]。
+
+【背景脈絡】
+[背景說明]
+
+【我想達成的目的】
+[目的]
+
+【語氣與長度】
+- 語氣：[語氣]
+- 長度：[長度]
+- 必含要素：[必含要素]
+
+【輸出要求】
+1. 直接給出可貼上使用的訊息本文，不要額外解釋。
+2. 本文後另起一行，用一句話說明你做的關鍵取捨。
+3. 資訊不足時，先列出 2-3 個需要我補充的問題，不要猜測。`,
+  inputs:["訊息類型（延期／婉拒／催覆…）","對象身份與關係","背景經過","想達成的目的","語氣與長度偏好"],
+  vars:[
+   {k:"[訊息類型]",d:"延期通知",note:"也可：委婉拒絕／感謝 follow-up／道歉澄清"},
+   {k:"[對象身份]",d:"客戶",note:"客戶／主管／同事／廠商"},
+   {k:"[溝通場合]",d:"Email",note:"Email／LINE／Slack"},
+   {k:"[背景說明]",d:"原定本週五交付，需多兩天",note:"用 1-2 句講清楚即可"},
+   {k:"[目的]",d:"爭取延期且不損關係",note:"寫出具體想要的結果"},
+   {k:"[語氣]",d:"專業但親切",note:"冷靜克制／溫和誠懇"},
+   {k:"[長度]",d:"150 字以內",note:"依場合調整"},
+   {k:"[必含要素]",d:"新日期、替代方案、下一步",note:"逗號分隔"}
+  ],
+  out:["① 訊息本文（可直接貼上）","② 一句關鍵取捨說明","③（必要時）待補充問題清單"],
+  example:"輸入：延期通知／客戶／Email／原定週五交付需多兩天／爭取延期不損關係。\n輸出：先感謝對方理解，主動給出替代時程（下週一上午），並提出可先提供半成品降低影響——最後補一句「若不便，我尊重你的安排」。",
+  ver:"v1.2 / 2025-01-12 / 修改率 20%",rate:20,
+  old:[{v:"v1.1 / 2024-11-03",p:"缺少「必含要素」欄位，常漏掉替代方案。"},{v:"v1.0 / 2024-09-18",p:"初版僅要求改寫，未要求說明取捨。"}],
+  promote:"「語氣與長度」拆開後，輸出穩定性明顯提升。"
+ },
+ {
+  id:2,name:"[資訊整理] 會議紀錄與長文重點行動萃取",cat:"資訊整理",tags:["會議","報告","商務"],status:"主力常用",plat:["ChatGPT","Claude","Gemini"],sync:true,
+  purpose:"把逐字稿、聊天紀錄或長文，濃縮成「結論＋行動＋待釐清」三件套，直接貼進工作區就能追蹤。",
+  when:["會議結束後 5 分鐘內整理","讀完長篇報告或客服對話","需要從混亂文字中抓出負責人與期限"],
+  whenNot:["需要逐字保留原話的法律／稽核場景","原文本身已結構化且很短","需要翻譯而非萃取"],
+  prompt:`你是一位高效的會議秘書與資訊整理助理。
+
+【任務】
+請將以下原始文字，萃取成一份可直接執行的濃縮紀錄。
+
+【原始資料】
+[原始文字]
+
+【產出結構】請嚴格依照順序：
+1. 一句話結論：最重要的決定或共識。
+2. 重點摘要：3-5 條，每條不超過 25 字。
+3. 行動項目：表格「行動｜負責人｜期限｜狀態」；未提及寫「待確認」，不要編造。
+4. 待釐清問題：尚無結論、需下次追蹤的事項。
+5. 風險與提醒：時程衝突、責任不明或口徑不一致處，明確指出。
+
+【規則】
+- 只使用原始資料中的資訊，不推測人物、數字或決定。
+- 用繁體中文，條列清楚，避免形容詞與空話。
+- 若原文過長，先完成結構，末尾標註「已擷取前 N 段，建議分段再處理」。`,
+  inputs:["逐字稿／聊天紀錄／長文","（可選）會議名稱與與會者"],
+  vars:[
+   {k:"[原始文字]",d:"（貼上逐字稿）",note:"可直接貼整段，上限依平台而定"}
+  ],
+  out:["① 一句話結論","② 3-5 條重點","③ 行動項目表格","④ 待釐清問題","⑤ 風險與提醒"],
+  example:"貼入 40 分鐘會議逐字稿 → 得到「共識：改採 B 方案，下週三前完成估價」＋行動表（報價／業務／10-22／待確認）＋待釐清「預算誰核」。",
+  ver:"v2.0 / 2025-01-08 / 修改率 10%",rate:10,
+  old:[{v:"v1.2 / 2024-12-02",p:"行動表缺少「狀態」欄，追蹤不易。"},{v:"v1.0 / 2024-10-11",p:"會自行補上未提到的負責人。"}],
+  promote:"加上「不要編造」後，幻覺幾乎消失，已標記為主力。"
+ },
+ {
+  id:3,name:"[分析決策] 多方案利弊與盲點評估顧問",cat:"分析決策",tags:["決策","商務","報告"],status:"主力常用",plat:["ChatGPT","Claude"],sync:false,
+  purpose:"在幾個選項間猶豫時，用結構化比較表＋盲點檢查，把「感覺」變成可討論的依據。",
+  when:["要在 2-4 個方案間做取捨","需要向主管／合夥人說明選擇理由","察覺自己可能只看了眼前好處"],
+  whenNot:["已有明確答案只需執行","純情緒性決定（無須成本效益）","涉及即時交易、需毫秒反應"],
+  prompt:`你是一位中立、嚴謹的決策顧問，擅長結構化比較與風險辨識。
+
+【任務】
+請針對我的決策情境，比較各方案並指出我可能忽略的盲點。
+
+【決策情境】
+[情境]
+
+【我的目標與限制】
+- 首要目標：[首要目標]
+- 次要目標：[次要目標]
+- 限制條件：[限制條件]
+
+【待比較方案】
+[方案清單]
+
+【輸出結構】
+1. 比較表：「方案｜優點｜缺點｜成本｜風險｜適合情境」。
+2. 推薦與理由：依首要目標給出首選，說明關鍵取捨。
+3. 盲點檢查：3 個我可能沒想到的角度（長期代價、退出成本、他人視角）。
+4. 反向壓力測試：若首選失敗，最可能原因為何？如何提前避免？
+5. 決議建議：一句話說明下一步。
+
+【規則】
+- 保持中立，不要過度迎合我的既有偏好。
+- 資訊不足時明確標註假設，不要默默帶過。`,
+  inputs:["決策背景","首要／次要目標","限制（時間、預算、人力）","方案 A/B/C 描述"],
+  vars:[
+   {k:"[情境]",d:"是否接下兼職專案",note:"簡述背景與選擇"},
+   {k:"[首要目標]",d:"增加收入",note:"只能選一個"},
+   {k:"[次要目標]",d:"累積作品集",note:"可留空"},
+   {k:"[限制條件]",d:"每週 8 小時、不接受晚上開會",note:"寫出具體限制"},
+   {k:"[方案清單]",d:"A 接案／B 拒絕／C 縮小規模合作",note:"每方案一行"}
+  ],
+  out:["① 比較表","② 推薦＋取捨","③ 3 個盲點","④ 壓力測試","⑤ 下一步建議"],
+  example:"比較「接案／拒絕／縮小合作」→ 推薦縮小規模；盲點指出「退出成本」與「對現職士氣的隱性影響」；壓力測試提醒「需先確認 Italy 客戶時區」。",
+  ver:"v1.3 / 2025-01-03 / 修改率 25%",rate:25,
+  old:[{v:"v1.1 / 2024-12-20",p:"推薦過於迎合使用者，已加入「中立」與「反向壓力測試」。"}],
+  promote:"待同步至 Raycast Snippet（快捷鍵 ;decide）。"
+ },
+ {
+  id:4,name:"[學習翻譯] 複雜概念拆解與地道跨語潤飾",cat:"學習翻譯",tags:["翻譯","寫作","日常"],status:"主力常用",plat:["ChatGPT","Claude","Gemini"],sync:true,
+  purpose:"先聽不懂的概念拆到懂，再把文字潤成目的語言的地道說法，適合讀外文資料與寫雙語稿件。",
+  when:["讀到術語密集的文章或論文","要把中文稿改成自然英文／日文","想向他人解釋一個复杂概念"],
+  whenNot:["需要逐字忠實翻譯的合約／詩歌","只需查單字不用理解脈絡","涉及高度專業醫藥法律術語且無上下文"],
+  prompt:`你是一位善於把复杂概念講清楚的老師，同時是熟練的雙語潤飾編輯。
+
+【任務】
+請先拆解概念，再依需求做跨語潤飾。
+
+【原始概念或文字】
+[原文]
+
+【我的程度與目的】
+- 背景程度：[程度]
+- 使用目的：[目的]
+
+【目標語言】
+[目標語言]
+
+【輸出結構】
+1. 一句話白話定義：完全不帶術語。
+2. 三層拆解：它是什麼／它如何運作／與我已知事物的連結（至少 1 個类比）。
+3. 常見誤解：1-2 個初學者容易搞錯的地方。
+4. 潤飾版本：以「[目標語言]」輸出通順、地道、符合目的語氣的版本，保留原意。
+5. 用詞差異說明：標出 2-3 個調整過的關鍵詞，說明為何更自然。
+
+【規則】
+- 避免堆疊術語；必須使用時立刻用括號解釋。
+- 潤飾不改變原文的事實與數據。`,
+  inputs:["想理解的段落或原文","自身背景程度","使用目的","目標語言"],
+  vars:[
+   {k:"[原文]",d:"（貼上段落）",note:"中英日皆可"},
+   {k:"[程度]",d:"有基礎",note:"入門／有基礎／專業"},
+   {k:"[目的]",d:"寫給客戶的Email",note:"自我理解／內部簡報／對外稿件"},
+   {k:"[目標語言]",d:"英文",note:"繁體中文／英文／日文"}
+  ],
+  out:["① 白話定義","② 三層拆解＋类比","③ 常見誤解","④ 潤飾版本","⑤ 用詞差異"],
+  example:"輸入「opportunity cost」＋目的「寫給客戶」→ 白話定義「你選了 A，就放棄的 B 的價值」；類比「晚餐選了牛排，放棄的早已看好的壽司」；英文版改為 'the value of the next best alternative'。",
+  ver:"v1.1 / 2024-12-28 / 修改率 15%",rate:15,
+  old:[{v:"v1.0 / 2024-11-15",p:"拆分不夠，初學者仍看不懂，後加入「类比」要求。"}],
+  promote:"「类比」要求讓理解速度明顯變快。"
+ },
+ {id:5,name:"[工作流程] 週報自動彙整草稿",cat:"工作流程",tags:["報告","商務"],status:"草稿測試中",plat:["ChatGPT"],sync:false,
+  purpose:"把零散的工作紀錄彙整成週報草稿。",when:["週五下班前"],whenNot:["需要精確工時"],
+  prompt:`你是一位秘書，請把以下零散紀錄彙整成週報：\n\n[紀錄]\n\n輸出：① 本週完成 ② 進行中 ③ 下週計畫。用繁體中文，條列。`,
+  inputs:["一週的零散紀錄"],vars:[{k:"[紀錄]",d:"（貼上筆記）",note:"逐日條列"}],
+  out:["完成／進行中／下週計畫"],example:"待補範例",ver:"v0.2 / 2025-01-18 / 修改率 40%",rate:40,old:[],promote:"測試中：常漏掉「進行中」項目。"},
+ {id:6,name:"[創意發想] 活動標語 10 組發想",cat:"創意發想",tags:["寫作","日常"],status:"草稿測試中",plat:["Gemini"],sync:false,
+  purpose:"針對主題快速產生多組標語備選。",when:["需要活動標語"],whenNot:["已有品牌固定語調規範"],
+  prompt:`你是文案創意總監，請針對「[主題]」發想 10 組標語，語氣 [語氣]，每組不超過 12 字，並標註主打情緒。`,
+  inputs:["主題","語氣"],vars:[{k:"[主題]",d:"讀書會",note:"活動名稱"},{k:"[語氣]",d:"溫暖",note:"活潑／專業"}],
+  out:["10 組標語＋情緒標註"],example:"待補範例",ver:"v0.1 / 2025-01-20 / 修改率 35%",rate:35,old:[],promote:"測試中：需限制字數避免太長。"},
+ {id:7,name:"[資訊整理] 舊版行程摘要（已淘汰）",cat:"資訊整理",tags:["會議"],status:"已封存",plat:["ChatGPT"],sync:false,
+  purpose:"舊版行程摘要，已被 id2 取代。",when:[],whenNot:["新任務請用 id2"],
+  prompt:`請摘要以下行程：[文字]`,inputs:["行程文字"],vars:[{k:"[文字]",d:"",note:""}],
+  out:["摘要"],example:"—",ver:"v0.9 / 2024-08-01 / 修改率 60%",rate:60,old:[],promote:"已封存，保留供追溯。"}
+];
+
+/* ---------------- State ---------------- */
+let state={view:"main",status:"",cat:"",tag:"",plat:"",search:"",star:false};
+let flowStep=0, annoOn=false, currentCard=null, varValues={};
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function filtered(){
+  return cards.filter(c=>{
+    if(state.star && c.status!=="主力常用") return false;
+    if(state.status && c.status!==state.status) return false;
+    if(state.cat && c.cat!==state.cat) return false;
+    if(state.tag && !c.tags.includes(state.tag)) return false;
+    if(state.plat && !c.plat.includes(state.plat)) return false;
+    if(state.view==="draft"){ if(c.status!=="草稿測試中") return false; }
+    if(state.view==="main" && c.status!=="主力常用" && !state.status && !state.cat && !state.tag && !state.plat && !state.search && !state.star) return false;
+    const q=state.search.trim().toLowerCase();
+    if(q && !(c.name.toLowerCase().includes(q)||c.tags.join(" ").toLowerCase().includes(q)||c.purpose.toLowerCase().includes(q))) return false;
+    return true;
+  });
+}
+function tagHtml(c){return `<span class="tag ${c.cat}">${c.cat}</span>`+c.tags.map(t=>`<span class="tag plain">${t}</span>`).join("")}
+function statusHtml(c){return `<span class="tag ${c.status}">${c.status}</span>`}
+function platHtml(c){return c.plat.map(p=>`<span class="tag plain">${p}</span>`).join("")}
+function chk(on){return `<span class="chk ${on?'on':''}">${on?'✓':''}</span>`}
+
+function render(){
+  document.querySelectorAll(".view-tab").forEach(t=>t.classList.toggle("active",t.dataset.v===state.view));
+  const list=filtered();
+  $("fcount").textContent=`共 ${list.length} 張卡片`;
+  let html="";
+  if(list.length===0){ html=`<div class="empty">沒有符合條件的卡片。試著清除篩選，或切換到其他檢視。</div>`; }
+  else if(state.view==="board"){
+    html=`<div class="board">`;
+    Object.keys(CATS).forEach(cat=>{
+      const col=list.filter(c=>c.cat===cat);
+      html+=`<div class="col"><div class="col-h"><span><span class="dot" style="background:${CATS[cat]}"></span>${cat}</span><span style="color:#aaa">${col.length}</span></div>`;
+      col.forEach(c=>{html+=`<div class="mini" data-id="${c.id}"><div class="mt">${esc(c.name)}</div><div class="mm">${statusHtml(c)}${c.tags.slice(0,2).map(t=>`<span class="tag plain">${t}</span>`).join("")}</div></div>`});
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+  } else {
+    html=`<div class="table-wrap"><table><thead><tr><th style="min-width:280px">範本名稱</th><th>主分類</th><th>情境標籤</th><th>狀態</th><th>適用平台</th><th>已同步</th></tr></thead><tbody>`;
+    list.forEach(c=>{
+      html+=`<tr data-id="${c.id}"><td><div class="t-name">${esc(c.name)}<small>${esc(c.purpose.slice(0,34))}…</small></div></td><td>${tagHtml(c)}</td><td>${c.tags.map(t=>`<span class="tag plain">${t}</span>`).join("")}</td><td>${statusHtml(c)}</td><td>${platHtml(c)}</td><td>${chk(c.sync)}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+  $("viewContent").innerHTML=html;
+  drawAnno();
+}
+
+/* ---------------- Drawer ---------------- */
+function openCard(id){
+  const c=cards.find(x=>x.id===id); if(!c) return;
+  currentCard=c; varValues={};
+  c.vars.forEach(v=>varValues[v.k]=v.d);
+  const promptHtml=renderPrompt();
+  $("drawer").innerHTML=`
+    <div class="dhead"><div><div class="dtitle">${esc(c.name)}</div></div><button class="dclose" onclick="closeDrawer()">✕</button></div>
+    <div class="dmeta">${tagHtml(c)}${statusHtml(c)}${platHtml(c)}${chk(c.sync)} 已同步至快捷工具</div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">1</span>用途</div><div class="dbody">${esc(c.purpose)}</div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">2</span>適用情境</div><div class="dbody">
+      <b style="color:var(--green)">✓ 何時該用</b><ul>${c.when.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      <b style="color:var(--red);display:block;margin-top:8px">✕ 不適用情境</b><ul>${c.whenNot.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+    </div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">3</span>提示詞主體 <span style="font-weight:400;color:var(--faint)">（/code 区块・右上 Copy）</span></div>
+      <div class="codewrap"><div class="codebar"><span>📋 Prompt 主體 · ${c.plat.join(" / ")}</span><button class="copybtn" id="copyBtn" onclick="copyPrompt()">⧉ Copy</button></div>
+      <pre id="promptPre">${esc(promptHtml)}</pre></div>
+      <div class="vars"><div class="vars-t"><span>⚡ 可調整變數（即時替換）</span><span id="replaceNote" class="replace-note"></span></div>
+      ${c.vars.map(v=>`<div class="var-row"><label>${v.k}</label><div><input data-vk="${v.k}" value="${esc(v.d)}"><div class="varhint">預設：${esc(v.d)} ｜ ${esc(v.note)}</div></div></div>`).join("")}
+      </div>
+    </div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">4</span>輸入資料</div><div class="dbody"><ul>${c.inputs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">5</span>可調整變數一覽</div><div class="tv">${c.vars.map(v=>`<div class="tv-row"><div class="k">${v.k}</div><div class="v">${esc(v.d)} <span style="color:#999">— ${esc(v.note)}</span></div></div>`).join("")}</div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">6</span>輸出格式</div><div class="dbody"><ul>${c.out.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">7</span>實際範例</div><div class="ex"><div class="lbl">INPUT → OUTPUT</div>${esc(c.example)}</div></div>
+
+    <div class="dsec"><div class="dlabel"><span class="n">8</span>版本與測試備註（含修改率紀錄）</div>
+      <div class="dbody" style="margin-bottom:10px">${esc(c.ver)} ｜ 修改率 <b>${c.rate}%</b> ${c.rate<20?'<span class="tag 主力常用">穩定</span>':'<span class="tag 草稿測試中">仍需微調</span>'}</div>
+      <div class="rate"><i style="width:${c.rate}%"></i></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">💡 ${esc(c.promote)}</div>
+      <details class="toggle"><summary>🗃 舊版備份（${c.old.length} 版）</summary><div class="tcontent">
+        ${c.old.length?c.old.map(o=>`<div class="old"><b>${esc(o.v)}</b><br>${esc(o.p)}</div>`).join(""):'<div class="old">尚無舊版備份。每次微調前，請先複製現有提示詞存入此處。</div>'}
+      </div></details>
+    </div>`;
+  $("overlay").classList.add("show");
+  $("drawer").classList.add("show");
+  $("drawer").querySelectorAll("input[data-vk]").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      varValues[e.target.dataset.vk]=e.target.value;
+      $("promptPre").textContent=renderPrompt();
+      setFlow(2);
+      const n=c.vars.filter(v=>varValues[v.k]!==v.d).length;
+      $("replaceNote").textContent=n?`已替換 ${n} 個變數`:``;
+    });
+  });
+}
+function renderPrompt(){
+  let p=currentCard.prompt;
+  Object.entries(varValues).forEach(([k,v])=>{p=p.split(k).join(v||k)});
+  return p;
+}
+function closeDrawer(){$("overlay").classList.remove("show");$("drawer").classList.remove("show")}
+function copyPrompt(){
+  const txt=$("promptPre").textContent;
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).catch(()=>fallbackCopy(txt))}
+  else fallbackCopy(txt);
+  const b=$("copyBtn"); b.textContent="✓ 已複製"; b.classList.add("ok");
+  setTimeout(()=>{if(b){b.textContent="⧉ Copy";b.classList.remove("ok")}},1800);
+  toast("已複製提示詞，可直接貼至 ChatGPT / Claude / Gemini");
+  setFlow(3);
+}
+function fallbackCopy(t){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}ta.remove()}
+
+/* ---------------- Flow / Toast / Anno ---------------- */
+function setFlow(n){
+  flowStep=Math.max(flowStep,n);
+  for(let i=1;i<=3;i++){const el=$("step"+i);el.classList.toggle("on",i===flowStep);el.classList.toggle("done",i<flowStep)}
+  $("flowHint").textContent=["","在卡片中替換變數並測試","完成！可貼到任一 AI 平台"][flowStep]||"";
+}
+function resetFlow(){flowStep=0;for(let i=1;i<=3;i++){$("step"+i).classList.remove("on","done")} $("flowHint").textContent="點擊上方 New 開始"}
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2400)}
+
+function drawAnno(){
+  if(!annoOn){$("annoLayer").innerHTML="";return}
+  const notes=[
+   {top:2,left:0,txt:"① 頂部：標題＋摘要＋快速操作導引"},
+   {top:0,left:610,txt:"② 三檢視分頁・5 秒切換"},
+   {top:150,left:0,txt:"③ 四層篩選列（狀態／分類／標籤／平台）"},
+   {top:230,left:0,txt:"④ 寬敞表格・重點元資料集中於左側"}
+  ];
+  $("annoLayer").innerHTML=notes.map(n=>`<div class="anno" style="top:${n.top}px;left:${n.left}px"><span class="abadge"><span>📌</span>${n.txt}</span></div>`).join("");
+}
+
+/* ---------------- Events ---------------- */
+document.querySelectorAll(".view-tab").forEach(t=>t.addEventListener("click",()=>{state.view=t.dataset.v;state.star=false;render()}));
+["Status","Cat","Tag","Plat"].forEach(k=>{
+  $("f"+k).addEventListener("change",e=>{state[k.toLowerCase()]=e.target.value;
+    if(k==="Status"&&e.target.value)state.star=false; render()});
+});
+$("fClear").addEventListener("click",()=>{state.status=state.cat=state.tag=state.plat=state.search="";state.star=false;["Status","Cat","Tag","Plat"].forEach(k=>$("f"+k).value="");$("search").value="";render()});
+$("search").addEventListener("input",e=>{state.search=e.target.value;render()});
+$("qNew").addEventListener("click",()=>{state.view="draft";state.status="草稿測試中";$("fStatus").value="草稿測試中";render();setFlow(1);toast("已切換至草稿整理區：點擊 New 開始新增卡片")});
+$("btnNew").addEventListener("click",()=>{setFlow(1);toast("Notion 實際操作：點 New 會自動帶出 8 欄位標準範本")});
+$("qStar").addEventListener("click",()=>{state.star=!state.star;state.status="";$("fStatus").value="";state.view="main";render();toast(state.star?"已只顯示「主力常用」":"已取消主力篩選")});
+$("qSync").addEventListener("click",()=>toast("Text Blaze 免費版約 20 則額度 → 只同步「主力常用」；Raycast 免費版可用 Snippets（雲端同步需 Pro）"));
+$("qExport").addEventListener("click",()=>toast("季度匯出提醒：每季第一週匯出 Notion 資料庫為 Markdown／CSV，存入舊版備份資料夾"));
+$("qAnno").addEventListener("click",()=>{annoOn=!annoOn;drawAnno();toast(annoOn?"已顯示設計標註":"已隱藏設計標註")});
+$("viewContent").addEventListener("click",e=>{
+  const row=e.target.closest("[data-id]"); if(row) openCard(+row.dataset.id);
+});
+$("overlay").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+document.querySelectorAll(".step").forEach(s=>s.addEventListener("click",()=>{
+  if(s.id==="step1"){$("qNew").click()}else if(s.id==="step2"){if(cards.find(c=>c.id===1))openCard(1)}else{copyPrompt()}
+}));
+
+render();
+</script>
+</body>
+</html>
